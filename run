@@ -38,6 +38,8 @@ else
 	TAILPID=""
 fi
 
+cat /etc/resolv.conf > $LOGDIR/resolv.conf
+
 echo "$CMD" > $LOGDIR/cmd
 INITDIR="$(readlink --canonicalize $(dirname "$0"))"
 $INITDIR/uml quiet mem=384M rootfstype=hostfs rootflags=/ ro \
