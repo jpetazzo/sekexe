@@ -9,6 +9,14 @@ do
 	}
 done
 
+if [ "$2" ]
+then
+	shift
+	echo "Extraneous arguments: $*"
+	echo "Try to enclose them within quotes?"
+	exit 255
+fi
+
 LOGDIR=/tmp/log.$$
 mkdir $LOGDIR
 
@@ -30,10 +38,11 @@ else
 	TAILPID=""
 fi
 
+echo "$CMD" > $LOGDIR/cmd
 INITDIR="$(readlink --canonicalize $(dirname "$0"))"
 $INITDIR/uml quiet mem=384M rootfstype=hostfs rootflags=/ ro \
 	eth0=slirp,,/usr/bin/slirp-fullbolt \
-	init=$INITDIR/init CMD="$CMD" LOGDIR="$LOGDIR" \
+	init=$INITDIR/init LOGDIR="$LOGDIR" \
 	<$STDIN >$STDOUT 2>$STDERR
 
 # Due to a weird behavior of usermodelinux, sometimes it will kill the
@@ -42,6 +51,6 @@ $INITDIR/uml quiet mem=384M rootfstype=hostfs rootflags=/ ro \
 
 STATUS=""
 [ -f "$LOGDIR/status" ] && STATUS="$(cat $LOGDIR/status)"
-rm -rf "$LOGDIR"
+[ "$DEBUG" ] || rm -rf "$LOGDIR"
 [ "$STATUS" ] && exit $STATUS
 exit 255
