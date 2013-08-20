@@ -25,7 +25,7 @@ ip link set eth0 up
 ip route add default via 10.1.1.254
 # This is to handle when /etc/resolv.conf -> /run/resolvconf/resolv.conf
 [ -L /etc/resolv.conf ] && {
-	mkdir -p $(dirname $(readlink --canonicalize /etc/resolv.conf))
+	mkdir -p $(dirname $(readlink --canonicalize-missing /etc/resolv.conf))
 	[ -f /etc/resolv.conf ] || {
 		cat /var/log/resolv.conf > /etc/resolv.conf
 	}
