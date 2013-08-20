@@ -47,7 +47,8 @@ $INITDIR/uml quiet mem=384M rootfstype=hostfs rootflags=/ ro \
 
 # Due to a weird behavior of usermodelinux, sometimes it will kill the
 # whole process group, and we won't have to kill tail. Duh.
-[ "$TAILPID" ] && [ -d /proc/$TAILPID ] && /bin/kill $TAILPID
+[ "$TAILPID" ] && [ -d /proc/$TAILPID ] && 
+	/bin/kill $TAILPID >/dev/null 2>/dev/null
 
 STATUS=""
 [ -f "$LOGDIR/status" ] && STATUS="$(cat $LOGDIR/status)"
