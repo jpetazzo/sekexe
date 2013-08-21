@@ -42,7 +42,7 @@ cat /etc/resolv.conf > $LOGDIR/resolv.conf
 
 echo "$CMD" > $LOGDIR/cmd
 INITDIR="$(readlink --canonicalize $(dirname "$0"))"
-$INITDIR/uml quiet mem=384M rootfstype=hostfs rootflags=/ ro \
+$INITDIR/uml quiet mem=2G rootfstype=hostfs rootflags=/ ro \
 	eth0=slirp,,/usr/bin/slirp-fullbolt \
 	init=$INITDIR/init LOGDIR="$LOGDIR" \
 	<$STDIN >$STDOUT 2>$STDERR
